@@ -38,3 +38,5 @@ if (ENABLE_TESTS)
     )
   endif (ENABLE_COVERAGE)
 endif(ENABLE_TESTS)
+
+include(static-analysis)
