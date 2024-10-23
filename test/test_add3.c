@@ -27,6 +27,9 @@ static void test_add3_mock(void **state) {
   expect_value(__wrap_add, a, 1);
   expect_value(__wrap_add, b, 2);
   will_return(__wrap_add, 3);
+  expect_value(__wrap_add, a, 3);
+  expect_value(__wrap_add, b, 4);
+  will_return(__wrap_add, 7);
 
   // when
   result = add3(a, b, c);

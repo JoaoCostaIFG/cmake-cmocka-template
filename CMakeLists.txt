@@ -33,8 +33,8 @@ if (ENABLE_TESTS)
     add_custom_target(coverage
       # COMMAND gcovr -r ${CMAKE_SOURCE_DIR}/src --html --html-details -o coverage.html
       # COMMAND gcovr -r ${CMAKE_SOURCE_DIR}/src -s
-      COMMAND gcovr -r ${CMAKE_CURRENT_SOURCE_DIR} --filter ${SRC_DIR} --html --html-details -o coverage.html
-      COMMAND gcovr -r ${CMAKE_CURRENT_SOURCE_DIR} --filter ${SRC_DIR} -s
+      COMMAND gcovr -r ${CMAKE_CURRENT_SOURCE_DIR} --filter ${SRC_DIR} --html --html-details --merge-mode-functions=separate -o coverage.html
+      COMMAND gcovr -r ${CMAKE_CURRENT_SOURCE_DIR} --filter ${SRC_DIR} -s --merge-mode-functions=separate
     )
   endif (ENABLE_COVERAGE)
 endif(ENABLE_TESTS)
