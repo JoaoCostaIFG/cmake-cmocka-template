@@ -38,7 +38,6 @@ function(add_mocked_test name)
     "${multiValueArgs}" ${ARGN} )
 
   # create link flags for mocks
-  set(link_flags "")
   foreach (mock ${ADD_MOCKED_TEST_MOCKS})
     set(link_flags "${link_flags} -Wl,--wrap=${mock}")
   endforeach(mock)
@@ -48,7 +47,7 @@ function(add_mocked_test name)
                   SOURCES test_${name}.c ${ADD_MOCKED_TEST_SOURCES}
                   COMPILE_OPTIONS ${DEFAULT_C_COMPILE_FLAGS}
                                   ${ADD_MOCKED_TEST_COMPILE_OPTIONS}
-                  LINK_LIBRARIES ${CMOCKA_LIBRARIES}
+                  LINK_LIBRARIES cmocka-static
                                  ${ADD_MOCKED_TEST_LINK_LIBRARIES}
                   LINK_OPTIONS ${link_flags} ${ADD_MOCKED_TEST_LINK_OPTIONS})
 
