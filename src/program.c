@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "module.h"
+#include "add3.h"
 
 int main(int argc, char **argv) {
   int a = 1, b = 2, c = 4;
