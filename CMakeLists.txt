@@ -6,9 +6,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 # Coverage needs some compile flags
 if (ENABLE_COVERAGE)
-  set(_OMEMO_COVERAGE_FLAGS -g -O0 --coverage)
-  add_compile_options(${_OMEMO_COVERAGE_FLAGS})
-  link_libraries(${_OMEMO_COVERAGE_FLAGS})
+  set(COVERAGE_FLAGS -g -O0 --coverage)
+  add_compile_options(${COVERAGE_FLAGS})
+  link_libraries(${COVERAGE_FLAGS})
 endif (ENABLE_COVERAGE)
 
 # Include directories for source code
