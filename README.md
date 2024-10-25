@@ -19,6 +19,13 @@ Notes:
 - Version 1.1.5 and bellow of CMocka build output has a different name for static libs, so you might need to change other stuff; also you should have no reason to downgrade CMocka's version.
 - For details about the `--wrap` options that CMocka uses for mocks, see the [compiler documentation page](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_node/ld_3.html).
 
+## Test examples
+
+- [test_add.c](./test/test_add.c) - testing API function of a lib (available externally).
+- [test_add3.c](./test/test_add3.c) - mocking an external function from a lib used by an external function from another lib.
+- [test_add_internal.c](./test/test_add_internal.c) - testing an internal static function directly.
+- [test_add_mock.c](./test/test_add_mock.c) - mocking an internal static function of a lib.
+
 ## Build
 
 ```bash
