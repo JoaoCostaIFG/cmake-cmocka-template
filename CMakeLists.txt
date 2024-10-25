@@ -2,7 +2,12 @@ cmake_minimum_required (VERSION 3.14)
 project (cmocka_template)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_C_FLAGS_DEBUG "-O0 -g -Wall")
+set(CMAKE_C_FLAGS_RELEASE "-Wall -Werror")
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
+include(static-analysis)
 
 # Coverage needs some compile flags
 if (ENABLE_COVERAGE)
@@ -38,5 +43,3 @@ if (ENABLE_TESTS)
     )
   endif (ENABLE_COVERAGE)
 endif(ENABLE_TESTS)
-
-include(static-analysis)
