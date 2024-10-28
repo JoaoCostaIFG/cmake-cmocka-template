@@ -28,10 +28,17 @@ Notes:
 
 ## Build
 
+There are some build options available (described later):
+
+- `CMAKE_BUILD_TYPE` - Sets the compiler options. Either Debug or Release. You can define more at the start of [CMakeLists.txt](./CMakeLists.txt).
+- `ENABLE_TESTS` - This builds your software with debug symbols and compiles the tests. Skip this for release builds.
+- `ENABLE_COVERAGE` - This option is ignored if tests are disabled. This adds a target to get the coverage report from running ctest.
+
 ```bash
 mkdir build
 cd build
-cmake ..
+# choose debug or release
+cmake -DCMAKE_BUILD_TYPE=Debug/Release ..
 cmake --build .
 ```
 
