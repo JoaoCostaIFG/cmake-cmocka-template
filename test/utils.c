@@ -3,6 +3,14 @@
 
 #include "utils.h"
 
+static unprotect_page(void *target)
+{
+	void *page = (void *)((uintptr_t)target & ~0xfff);
+	if (mprotect(page, 4096, PROT_WRITE | PROT_EXEC)) {
+		return -2;
+	}
+}
+
 /* We should add the following attributes to the target function, so we can
  * support hotpatching while other threads might be executing the function.
  * Basically making the hot patch atomic, and garanteeing there's always
@@ -22,10 +30,10 @@
  *  __asm("");
  */
 
+#if defined(__x86_64__) || defined(_M_X64) || defined(i386) || defined(__i386__) || defined(__i386) || defined(_M_IX86)
 
 int hotpatch(void *target, void *replacement)
 {
-	void *page = (void *)((uintptr_t)target & ~0xfff);
 	// We assume that offset is within 32-bit for jmp (0xe9) instruction
 	uint32_t offset = (char *)replacement - (char *)target - 5;
 	union {
@@ -34,13 +42,7 @@ int hotpatch(void *target, void *replacement)
 	} instruction = { { 0xe9, offset >> 0, offset >> 8, offset >> 16,
 			    offset >> 24 } };
 
-	/* This assertion is useful if we're using the ms_hook_prologue. Since we
-	 * are pretending to test some legacy code, we don't have the garantee.
-	 */
-	// if (((uintptr_t)target & 0x07) != 0)
-	// 	return -1;
-
-	if (mprotect(page, 4096, PROT_WRITE | PROT_EXEC)) {
+	if (unprotect_page(target)) {
 		return -2;
 	}
 	*(uint64_t *)target = instruction.value;
@@ -54,3 +56,23 @@ int hotpatch(void *target, void *replacement)
 	*/
 	return 0;
 }
+
+#elif defined(__ARM_ARCH_6T2_) || defined(__ARM_ARCH_6T2_) || defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) || defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6Z__) || defined(__ARM_ARCH_6ZK__) || defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__) || defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__) || defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7S__) || defined(__aarch64__) || defined(_M_ARM64)
+
+int hotpatch(void *target, void *replacement)
+{
+	uint32_t offset = (char *)replacement - (char *)target;
+	uint32_t instruction = (0x14 << 24) | ((offset >> 2) & 0x3ffffff);
+
+	if (unprotect_page(target)) {
+		return -2;
+	}
+	*(uint64_t *)target = instruction;
+
+	return 0;
+}
+
+#else
+#error Architecture not supported for hotpatching
+#endif
+

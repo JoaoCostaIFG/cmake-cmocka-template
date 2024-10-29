@@ -3,7 +3,8 @@
 
 /**
  * hotpatch replaces the first instruction of the target function by a
- * jmp to to the replacement function.
+ * unconditional jmp/branch (depends on the architecture) to the
+ * replacement function.
  *
  * Return:
  *  0 on success
