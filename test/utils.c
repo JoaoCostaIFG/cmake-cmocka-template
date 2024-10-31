@@ -3,12 +3,13 @@
 
 #include "utils.h"
 
-static unprotect_page(void *target)
+static int unprotect_page(void *target)
 {
 	void *page = (void *)((uintptr_t)target & ~0xfff);
 	if (mprotect(page, 4096, PROT_WRITE | PROT_EXEC)) {
 		return -2;
 	}
+	return 0;
 }
 
 /* We should add the following attributes to the target function, so we can
